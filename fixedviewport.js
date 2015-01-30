@@ -11,6 +11,10 @@ var FixedViewport;
         var min = Math.min(widthRatio, heightRatio);
         var newwidth = Math.max(width, window.innerWidth / min);
         var newheight = Math.max(height, window.innerHeight / min);
+        if ("zoom" in document.documentElement.style) {
+            document.documentElement.style.zoom = "" + min;
+            return;
+        }
         document.documentElement.style.width = newwidth + "px";
         document.documentElement.style.height = newheight + "px";
         document.documentElement.style.transform = "scale(" + min + ")";
