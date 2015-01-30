@@ -40,14 +40,17 @@ module FixedViewport {
         document.head.appendChild(style);
         var firstRule = (<CSSStyleSheet>document.styleSheets[document.styleSheets.length - 1]).cssRules[0]
 
-        if ((!firstRule || (firstRule.type & 15) !== 15) && window.devicePixelRatio === 1)
+        var isNative = true;
+        if ((!firstRule || (firstRule.type & 15) !== 15) && window.devicePixelRatio === 1) {
             addResizeListener(width, height);
+            isNative = false;
+        }
 
         document.head.removeChild(style);
 
         return {
-            onDOMContentLoaded: () => addDOMContentLoadedListener(width, height),
-            direct: () => rescale(width, height)
+            onDOMContentLoaded: () => { if (!isNative) addDOMContentLoadedListener(width, height) },
+            direct: () => { if (!isNative) rescale(width, height) }
         };
     }
 }
