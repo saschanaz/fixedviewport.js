@@ -41,7 +41,11 @@ module FixedViewport {
         var firstRule = (<CSSStyleSheet>document.styleSheets[document.styleSheets.length - 1]).cssRules[0]
 
         var isNative = true;
-        if ((!firstRule || (firstRule.type & 15) !== 15) && window.devicePixelRatio === 1) {
+        // Checking CSS Device Adaptation support
+        var parsed = (firstRule && (firstRule.type & 15) === 15)
+        // Fallback - Is <meta> viewport working?
+        var zoomed = (window.innerWidth === width || window.innerHeight === height);
+        if (!parsed && !zoomed) {
             addResizeListener(width, height);
             isNative = false;
         }
