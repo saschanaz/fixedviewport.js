@@ -1,5 +1,20 @@
 var FixedViewport;
 (function (FixedViewport) {
+    function isNativelyFixed(width, height) {
+        var style = generateStyle();
+        document.head.appendChild(style);
+        var firstRule = document.styleSheets[document.styleSheets.length - 1].cssRules[0];
+        var isNative = true;
+        // Checking CSS Device Adaptation support
+        var parsed = (firstRule && (firstRule.type & 15) === 15);
+        // Fallback - Is <meta> viewport working?
+        var zoomed = (window.innerWidth === width || window.innerHeight === height);
+        if (!parsed && !zoomed)
+            isNative = false;
+        document.head.removeChild(style);
+        return isNative;
+    }
+    FixedViewport.isNativelyFixed = isNativelyFixed;
     function generateStyle() {
         var style = document.createElement("style");
         style.textContent = "@-ms-viewport {} @-moz-viewport {} @-webkit-viewport {} @viewport {}";
@@ -35,16 +50,9 @@ var FixedViewport;
         var style = generateStyle();
         document.head.appendChild(style);
         var firstRule = document.styleSheets[document.styleSheets.length - 1].cssRules[0];
-        var isNative = true;
-        // Checking CSS Device Adaptation support
-        var parsed = (firstRule && (firstRule.type & 15) === 15);
-        // Fallback - Is <meta> viewport working?
-        var zoomed = (window.innerWidth === width || window.innerHeight === height);
-        if (!parsed && !zoomed) {
+        var isNative = isNativelyFixed(width, height);
+        if (!isNative)
             addResizeListener(width, height);
-            isNative = false;
-        }
-        document.head.removeChild(style);
         return {
             onDOMContentLoaded: function () {
                 if (!isNative)

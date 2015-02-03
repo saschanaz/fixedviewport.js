@@ -24,6 +24,9 @@ body {
   padding: 50px;
   width: 1920px;
   height: 1080px;
+
+  text-align: center;
+  font-size: 50px;
 }
 .content {
   width: 100%;
@@ -32,6 +35,5 @@ body {
 }
 .title {
   font-size: 70px;
-  text-align: center;
   margin: 0;
 }

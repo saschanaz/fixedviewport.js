@@ -1,21 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
   <head>
 	<meta charset="utf-8" />
-    <meta name="viewport" content="width=1920,height=1080" />
-	
     <link rel="stylesheet" href="style.css">
 	<script src="fixedviewport.js"></script>
     <script>
       "use strict";
       FixedViewport.polyfill(1920, 1080).onDOMContentLoaded();
+      document.addEventListener("DOMContentLoaded", function () {
+        var native = document.getElementById("native");
+        native.textContent = FixedViewport.isNativelyFixed(1920, 1080) ? "native" : "polyfill";
+        document.getElementById("windowSize").textContent = window.innerWidth + " / " + window.innerHeight;
+      });
     </script>
   </head>
 
   <body>
     <div class="content">
-      <p class="title">Hello Plunker!</p>
+      <p class="title">The Fixed Viewport</p>
+      Fixed viewport support: <span id="native"> </span>
     </div>
   </body>
 
