@@ -1,5 +1,5 @@
 # fixedviewport.js
-A polyfill to implement fixed viewport for desktop browsers.
+A polyfill to implement fixed viewport for desktop browsers. See the demo [here](http://saschanaz.github.io/fixedviewport.js/).
 
 ### API
 
