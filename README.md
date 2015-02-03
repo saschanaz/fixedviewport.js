@@ -24,7 +24,7 @@ This polyfill mocks Internet Explorer's [CSS Device Adaptation](http://dev.w3.or
 
 This is an example for 1920*1080 viewport.
 
-```
+```css
 @-ms-viewport {
   width: 1920px;
   height: 1080px;
