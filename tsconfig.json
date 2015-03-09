@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "declaration": true
+    },
+    "files": [
+        "fixedviewport.ts"
+    ]
+}

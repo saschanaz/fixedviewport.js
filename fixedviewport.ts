@@ -7,9 +7,7 @@ module FixedViewport {
         var isNative = true;
         // Checking CSS Device Adaptation support
         var parsed = (firstRule && (firstRule.type & 15) === 15)
-        // Fallback - Is <meta> viewport working?
-        var zoomed = (window.innerWidth === width || window.innerHeight === height);
-        if (!parsed && !zoomed)
+        if (!parsed)
             isNative = false;
 
         document.head.removeChild(style);
