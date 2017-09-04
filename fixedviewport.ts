@@ -41,15 +41,11 @@ namespace FixedViewport {
     }
 
     function addResizeListener(width: number, height: number) {
-        window.addEventListener("resize", () => {
-            rescale(width, height);
-        });
+        window.addEventListener("resize", () => rescale(width, height));
     }
 
     function addDOMContentLoadedListener(width: number, height: number) {
-        document.addEventListener("DOMContentLoaded", () => {
-            rescale(width, height);
-        });
+        document.addEventListener("DOMContentLoaded", () => rescale(width, height));
     }
 
     export function polyfill(width: number, height: number) {
