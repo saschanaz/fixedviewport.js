@@ -7,11 +7,10 @@
     <script src="fixedviewport.js"></script>
     <script>
       "use strict";
-      FixedViewport.polyfill(1920, 1080).onDOMContentLoaded();
-      document.addEventListener("DOMContentLoaded", function () {
-        var native = document.getElementById("native");
-        native.textContent = FixedViewport.isNativelyFixed(1920, 1080) ? "native" : "polyfill";
-        document.getElementById("windowSize").textContent = window.innerWidth + " / " + window.innerHeight;
+      FixedViewport.polyfill(1920, 1080);
+      document.addEventListener("DOMContentLoaded", () => {
+        const native = document.getElementById("native");
+        native.textContent = FixedViewport.hasNativeSupport() ? "native" : "polyfill";
       });
     </script>
   </head>
@@ -19,7 +18,7 @@
   <body>
     <div class="content">
       <p class="title">The Fixed Viewport</p>
-      Fixed viewport support: <span id="native"> </span>
+      <p>Fixed viewport support: <span id="native"></span></p>
     </div>
   </body>
 

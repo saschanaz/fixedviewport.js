@@ -1,5 +1,5 @@
 namespace FixedViewport {
-    export function isNativelyFixed() {
+    export function hasNativeSupport() {
         const style = generateStyle();
         // add on head to get document-associated style sheet
         document.head.appendChild(style);
@@ -45,13 +45,15 @@ namespace FixedViewport {
     }
 
     export function polyfill(width: number, height: number) {
-        const isNative = isNativelyFixed();
-        if (!isNative)
+        if (!hasNativeSupport()) {
             addResizeListener(width, height);
+        }
 
-        return {
-            onDOMContentLoaded: () => { if (!isNative) addDOMContentLoadedListener(width, height) },
-            direct: () => { if (!isNative) rescale(width, height) }
-        };
+        if (document.readyState === "loading") {
+            addDOMContentLoadedListener(width, height);
+        }
+        else {
+            rescale(width, height);
+        }
     }
 }

@@ -1,21 +1,18 @@
 var FixedViewport;
 (function (FixedViewport) {
-    function isNativelyFixed() {
+    function hasNativeSupport() {
         var style = generateStyle();
         // add on head to get document-associated style sheet
         document.head.appendChild(style);
         var firstRule = style.sheet.cssRules[0];
-        var isNative = true;
         // Checking CSS Device Adaptation support
         // Note: Do not just check existence of CSSRule.VIEWPORT_RULE
         // as MSEdge 16 does not support the spec even with the existence.
-        var parsed = (firstRule && (firstRule.type & 15) === 15);
-        if (!parsed)
-            isNative = false;
+        var supportsViewportRule = (firstRule && (firstRule.type & 15) === 15);
         document.head.removeChild(style);
-        return isNative;
+        return supportsViewportRule;
     }
-    FixedViewport.isNativelyFixed = isNativelyFixed;
+    FixedViewport.hasNativeSupport = hasNativeSupport;
     function generateStyle() {
         var style = document.createElement("style");
         style.textContent = "@-ms-viewport {} @-moz-viewport {} @-webkit-viewport {} @viewport {}";
@@ -38,25 +35,21 @@ var FixedViewport;
         document.documentElement.style.marginTop = (min - 1) * newheight / 2 + "px";
     }
     function addResizeListener(width, height) {
-        window.addEventListener("resize", function () {
-            rescale(width, height);
-        });
+        window.addEventListener("resize", function () { return rescale(width, height); });
     }
     function addDOMContentLoadedListener(width, height) {
-        document.addEventListener("DOMContentLoaded", function () {
-            rescale(width, height);
-        });
+        document.addEventListener("DOMContentLoaded", function () { return rescale(width, height); });
     }
     function polyfill(width, height) {
-        var isNative = isNativelyFixed();
-        if (!isNative)
+        if (!hasNativeSupport()) {
             addResizeListener(width, height);
-        return {
-            onDOMContentLoaded: function () { if (!isNative)
-                addDOMContentLoadedListener(width, height); },
-            direct: function () { if (!isNative)
-                rescale(width, height); }
-        };
+        }
+        if (document.readyState === "loading") {
+            addDOMContentLoadedListener(width, height);
+        }
+        else {
+            rescale(width, height);
+        }
     }
     FixedViewport.polyfill = polyfill;
 })(FixedViewport || (FixedViewport = {}));
