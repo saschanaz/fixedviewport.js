@@ -1,15 +1,15 @@
-module FixedViewport {
+namespace FixedViewport {
     export function isNativelyFixed() {
-        var style = generateStyle();
+        const style = generateStyle();
         // add on head to get document-associated style sheet
         document.head.appendChild(style);
-        var firstRule = (style.sheet as CSSStyleSheet).cssRules[0]
+        const firstRule = (style.sheet as CSSStyleSheet).cssRules[0]
 
-        var isNative = true;
+        let isNative = true;
         // Checking CSS Device Adaptation support
         // Note: Do not just check existence of CSSRule.VIEWPORT_RULE
         // as MSEdge 16 does not support the spec even with the existence.
-        var parsed = (firstRule && (firstRule.type & 15) === 15)
+        const parsed = (firstRule && (firstRule.type & 15) === 15)
         if (!parsed)
             isNative = false;
 
@@ -17,17 +17,17 @@ module FixedViewport {
         return isNative;
     }
     function generateStyle() {
-        var style = document.createElement("style");
+        const style = document.createElement("style");
         style.textContent = "@-ms-viewport {} @-moz-viewport {} @-webkit-viewport {} @viewport {}";
         return style;
     }
 
     function rescale(width: number, height: number) {
-        var widthRatio = window.innerWidth / width;
-        var heightRatio = window.innerHeight / height;
-        var min = Math.min(widthRatio, heightRatio);
-        var newwidth = Math.max(width, window.innerWidth / min);
-        var newheight = Math.max(height, window.innerHeight / min);
+        const widthRatio = window.innerWidth / width;
+        const heightRatio = window.innerHeight / height;
+        const min = Math.min(widthRatio, heightRatio);
+        const newwidth = Math.max(width, window.innerWidth / min);
+        const newheight = Math.max(height, window.innerHeight / min);
 
         if ("zoom" in document.documentElement.style) {
             document.documentElement.style.zoom = `${min}`;
@@ -53,7 +53,7 @@ module FixedViewport {
     }
 
     export function polyfill(width: number, height: number) {
-        var isNative = isNativelyFixed();
+        const isNative = isNativelyFixed();
         if (!isNative)
             addResizeListener(width, height);
 
