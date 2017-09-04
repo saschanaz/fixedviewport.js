@@ -1,11 +1,14 @@
 var FixedViewport;
 (function (FixedViewport) {
-    function isNativelyFixed(width, height) {
+    function isNativelyFixed() {
         var style = generateStyle();
+        // add on head to get document-associated style sheet
         document.head.appendChild(style);
-        var firstRule = document.styleSheets[document.styleSheets.length - 1].cssRules[0];
+        var firstRule = style.sheet.cssRules[0];
         var isNative = true;
         // Checking CSS Device Adaptation support
+        // Note: Do not just check existence of CSSRule.VIEWPORT_RULE
+        // as MSEdge 16 does not support the spec even with the existence.
         var parsed = (firstRule && (firstRule.type & 15) === 15);
         if (!parsed)
             isNative = false;
@@ -45,10 +48,7 @@ var FixedViewport;
         });
     }
     function polyfill(width, height) {
-        var style = generateStyle();
-        document.head.appendChild(style);
-        var firstRule = document.styleSheets[document.styleSheets.length - 1].cssRules[0];
-        var isNative = isNativelyFixed(width, height);
+        var isNative = isNativelyFixed();
         if (!isNative)
             addResizeListener(width, height);
         return {
