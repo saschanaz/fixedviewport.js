@@ -3,18 +3,14 @@ namespace FixedViewport {
         const style = generateStyle();
         // add on head to get document-associated style sheet
         document.head.appendChild(style);
-        const firstRule = (style.sheet as CSSStyleSheet).cssRules[0]
+        const firstRule = (style.sheet as CSSStyleSheet).cssRules[0];
 
-        let isNative = true;
         // Checking CSS Device Adaptation support
         // Note: Do not just check existence of CSSRule.VIEWPORT_RULE
         // as MSEdge 16 does not support the spec even with the existence.
-        const parsed = (firstRule && (firstRule.type & 15) === 15)
-        if (!parsed)
-            isNative = false;
-
+        const supportsViewportRule = (firstRule && (firstRule.type & 15) === 15);
         document.head.removeChild(style);
-        return isNative;
+        return supportsViewportRule;
     }
     function generateStyle() {
         const style = document.createElement("style");
