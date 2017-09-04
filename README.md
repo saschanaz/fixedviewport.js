@@ -4,18 +4,16 @@ A polyfill to implement fixed viewport for desktop browsers. See the demo [here]
 ### API
 
 ```typescript
-declare module FixedViewport {
-    function polyfill(width: number, height: number): {
-        onDOMContentLoaded: () => void; // to be used before DOMContentLoaded
-        direct: () => void; // to be used after DOMContentLoaded
-    };
+declare namespace FixedViewport {
+  function hasNativeSupport(): boolean;
+  function polyfill(width: number, height: number): void;
 }
 ```
 
 ### Example
 
 ```javascript
-FixedViewport.polyfill(1920, 1080).onDOMContentLoaded();
+FixedViewport.polyfill(1920, 1080);
 ```
 
 ### Note
@@ -34,3 +32,5 @@ This is an example for 1920*1080 viewport.
   height: 1080px;
 }
 ```
+
+Also note that IE11 and Edge on Windows 10 ended CSS Device Adaptation support [since Anniversary Update](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7970618/) so this library runs in polyfill mode in that case.
